@@ -1,23 +1,17 @@
-FROM python:3.9-slim
+# our base image
+FROM  python:3.8.2-slim-buster
 
+# set working directory inside the image
 WORKDIR /workspace
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# copy our requirements
+COPY requirements.txt .
 
-# Upgrade pip
-RUN pip3 install --no-cache-dir --upgrade pip
+# install dependencies
+RUN pip3 install -r requirements.txt && rm -rf /root/.cache/pip
 
-COPY requirements.txt requirements.txt
-
-RUN pip3 install --no-cache-dir -r requirements.txt 
-
+# copy this folder contents to image
 COPY . .
 
-# Remove these lines
-# ENTRYPOINT ["python3", "train.py"]
-# CMD [ ]
+
 
